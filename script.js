@@ -1,4 +1,4 @@
-const key = "4cb75f0a62904836a65104703243006";
+const key = "8673a0d15b5f64a814e5a7829b22b5f0";
 let submit = document.getElementById("submit");
 let weatherTemp = document.getElementById("weatherTemp");
 let weatherStatus = document.getElementById("weatherStatus");
@@ -11,7 +11,7 @@ const getWeatherDetails = async (URL) => {
     let response = await fetch(URL);
     let data = await response.json();
     console.log(data);
-    if (data.error) {
+    if (data.cod == 404) {
         showError();
     } else {
         showWeatherData(data);
@@ -26,14 +26,14 @@ const showError = () => {
 }
 
 const showWeatherData = (data) => {
-    weatherTemp.innerText = data.current.temp_c;
-    weatherFeelsLike.innerText = data.current.feelslike_c;
-    weatherFeelsLike = weatherFeelsLike + '%';
-    weatherHumidity.innerText = data.current.humidity;
-    weatherWind.innerText = data.current.wind_kph;
-    weatherStatus.innerText = data.current.condition.text;
-    let img = document.querySelectorAll("img");
-    img[1].src = data.current.condition.icon;
+    let temp = data.main.temp ;
+    weatherTemp.innerText = Math.round((temp - 273)*100)/100 ;
+    temp = data.main.feels_like  ;
+    weatherFeelsLike.innerText = Math.round((temp - 273)*100)/100 ;
+    weatherHumidity.innerText = data.main.humidity;
+    temp = data.wind.speed    ;
+    weatherWind.innerText = Math.round((temp/0.621371)*100)/100
+    weatherStatus.innerText = data.weather[0].main;
 }
 
 submit.addEventListener('click', () => {
@@ -46,7 +46,7 @@ submit.addEventListener('click', () => {
         errorShow.classList.remove("hidden");
         outputSection.classList.add("hidden");
     } else {
-        const URL = `http://api.weatherapi.com/v1/current.json?key=${key}&q=${city}`;
+        const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
         errorShow.classList.add("hidden");
         console.log(city);
         getWeatherDetails(URL);
