@@ -26,14 +26,31 @@ const showError = () => {
 }
 
 const showWeatherData = (data) => {
-    let temp = data.main.temp ;
-    weatherTemp.innerText = Math.round((temp - 273)*100)/100 ;
-    temp = data.main.feels_like  ;
-    weatherFeelsLike.innerText = Math.round((temp - 273)*100)/100 ;
+    let temp = data.main.temp;
+    weatherTemp.innerText = Math.round((temp - 273) * 100) / 100;
+    temp = data.main.feels_like;
+    weatherFeelsLike.innerText = Math.round((temp - 273) * 100) / 100;
     weatherHumidity.innerText = data.main.humidity;
-    temp = data.wind.speed    ;
-    weatherWind.innerText = Math.round((temp/0.621371)*100)/100
+    temp = data.wind.speed;
+    weatherWind.innerText = Math.round((temp / 0.621371) * 100) / 100
     weatherStatus.innerText = data.weather[0].main;
+    let weatherImage = document.querySelector('img');
+
+    switch (data.weather[0].main) {
+
+        case 'Clouds': weatherImage.src = "./Clouds.png";
+            break;
+        case 'Clear': weatherImage.src = "./Clear.png";
+            break;
+        case 'Mist': weatherImage.src = "./Mist.png";
+            break;
+        case 'Rain': weatherImage.src = "./Rain.png";
+            break;
+        case 'Snow': weatherImage.src = "./Snow.png";
+            break;
+        default :
+            weatherImage.src = "./Img1.png";
+    }
 }
 
 submit.addEventListener('click', () => {
