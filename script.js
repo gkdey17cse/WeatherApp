@@ -10,7 +10,7 @@ let weatherFeelsLike = document.getElementById("weatherFeelsLike");
 const getWeatherDetails = async (URL) => {
     let response = await fetch(URL);
     let data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.cod == 404) {
         showError();
     } else {
@@ -18,7 +18,7 @@ const getWeatherDetails = async (URL) => {
     }
 }
 
-const showError = () => {
+const showError = () => { 
     let outputSection = document.getElementById("output-section");
     let errorShow = document.getElementById("errorShow");
     errorShow.classList.remove("hidden");
@@ -26,18 +26,21 @@ const showError = () => {
 }
 
 const showWeatherData = (data) => {
+    // API Temparature
     let temp = data.main.temp;
     weatherTemp.innerText = Math.round((temp - 273) * 100) / 100;
+    // API Temparature Feels Like
     temp = data.main.feels_like;
     weatherFeelsLike.innerText = Math.round((temp - 273) * 100) / 100;
+    // API Humidity
     weatherHumidity.innerText = data.main.humidity;
+    // API Wind Speed
     temp = data.wind.speed;
     weatherWind.innerText = Math.round((temp / 0.621371) * 100) / 100
+    // API Weather Status
     weatherStatus.innerText = data.weather[0].main;
     let weatherImage = document.querySelector('img');
-
     switch (data.weather[0].main) {
-
         case 'Clouds': weatherImage.src = "./Clouds.png";
             break;
         case 'Clear': weatherImage.src = "./Clear.png";
@@ -65,7 +68,7 @@ submit.addEventListener('click', () => {
     } else {
         const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
         errorShow.classList.add("hidden");
-        console.log(city);
+        // console.log(city);
         getWeatherDetails(URL);
         outputSection.classList.remove("hidden");
     }
